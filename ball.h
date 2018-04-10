@@ -20,7 +20,8 @@ public:
     ~Ball();
 
     void render(QPainter &painter, unsigned int time);
-    bool isCollision();
+    bool isXCollision();
+    bool isYCollision();
     unsigned int getRadius();
 
 private:

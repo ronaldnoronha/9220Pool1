@@ -1,23 +1,26 @@
 #include "dialog.h"
 #include "ui_dialog.h"
+#include <QColor>
 
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Dialog),
-    m_ball(Ball(Coordinate(20, 20, 600), 20, -9.8, 2.7, 7)),
+    m_ball(Ball(Coordinate(50, 50, 300), 10, -0.1, 10, 1)),
     m_counter(0)
 {
     ui->setupUi(this);
-    this->resize(1000, 600);
+    this->resize(600, 300);
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(nextFrame()));
-    timer->start(1);
+    timer->start(100000);
 }
 
 void Dialog::paintEvent(QPaintEvent *event)
 {
-    this->setStyleSheet("background-color: #82CAFF;");
+
+    //this->setStyleSheet("background-color: yellow");
     QPainter painter(this);
+    this->setStyleSheet("background-color: green;");
 
     bool animation = true;
     if (animation) {
@@ -25,32 +28,7 @@ void Dialog::paintEvent(QPaintEvent *event)
         m_ball.render(painter, m_counter);
         m_counter++;
     }
-    else {
-        // add after the creation of the painter object
-        QPen pen;
-        pen.setWidth(3);
-        pen.setColor(Qt::black);
-        QBrush brush(Qt::yellow);
 
-        painter.setPen (pen);
-        painter.setBrush(brush);
-        // add before the painter draws the ellipse
-        painter.drawEllipse(30, 30, 100, 100);
-        brush.setColor("#C36241");
-        painter.setBrush(brush);
-        pen.setWidth(1);
-
-        QPolygon roof;
-        roof.putPoints(0, 3, 250, 260, 290, 220, 330, 260);
-        painter.drawPolygon(roof);
-
-        brush.setColor("#835C3B");
-        painter.setBrush(brush);
-
-        QPolygon house;
-        house.putPoints(0, 4, 260, 260, 260, 299, 320, 299, 320, 260);
-        painter.drawPolygon(house);
-    }
 }
 
 void Dialog::nextFrame()
